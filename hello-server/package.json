@@ -1,0 +1,25 @@
+{
+  "name": "hello-server",
+  "version": "0.0.1",
+  "description": "Hello REST API Server",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "nodemon ./src/server.js",
+    "test": "mocha",
+    "publish": "node ./src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/ourguide/thethelab-android"
+  },
+  "author": "Hanna Jang <j3552j@gmail.com>",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "koa": "^2.5.2",
+    "koa-logger": "^3.2.0",
+    "koa-router": "^7.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  }
+}
