@@ -5,7 +5,7 @@
 
 # 이미지를 만드는 명령
 # $ docker build -t  hannah/hello-server .
-# 					 <account/project-name> <dockerfile path>
+# 			<account/project-name> <dockerfile path>
 
 # 이미지로부터 컨테이너를 만들어서 실행하는 명령
 # $ docker run --name hello-server \
@@ -15,10 +15,10 @@
 # 만들어진 컨테이너를 확인하는 명령
 # $ docker ps -a
 # 종료된 컨테이너를 삭제하는 명령
-# $ docker rm <container-if or name>
+# $ docker rm <container-id or name>
 
 # 종료된 컨테이너를 정지하는 명령
-# $ docker stop <container-if or name>
+# $ docker stop <container-id or name>
 
 # ------------------------------
 # Docker Image 지정한다.
