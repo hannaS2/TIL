@@ -34,7 +34,7 @@ private static void pick(int n, ArrayList<Integer> picked, int toPick) {
 ## 예제
 ### Sorting Problem
 ```java
-// selection sort
+<selection sort>
 private static void selectionSort(int[] arr) {
     int min, temp;
     for (int i = 0; i < arr.length - 1; i++) {
@@ -54,7 +54,7 @@ private static void selectionSort(int[] arr) {
 > swap : O(N) 바깥 for문
 
 ```java
-// bubble sort
+<bubble sort>
 private static void bubbleSort(int[] list) {
     for (int i = 0; i < list.length - 1; i++) {
         for (int j = 0; j < list.length - 1 - i; j++) {
