@@ -19,7 +19,7 @@ app.use(async ctx => {
 router.get("/", async ctx => {
     ctx.body = {
         name: "Hello REST API Server",
-        version: "0.0.3",
+        version: "1.0.4",
         links: {
             user_url: "https://api.hannahi.xyz/users"
         }
