@@ -12,13 +12,13 @@ public class _10448 {
             testNum[i] = sc.nextInt();
         }
 
-        for (int i = 0; i < testNum.length; i++) {
-            System.out.println(isEureka(testNum[i]));
+        for (int aTestNum : testNum) {
+            System.out.println(isEureka(aTestNum));
         }
 
     }
 
-    public static int isEureka(int num) {
+    private static int isEureka(int num) {
         int result = 0;
         int[] triangleNum = new int[45];
 
