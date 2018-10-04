@@ -89,3 +89,6 @@ private static int bfStringMatching(String text, String pattern) {
 ```
 > worst-case가 while문 안에서 pattern글자 끝까지 가서 틀렸을 경우로 text의 길이를 N, pattern의 길이를 M이라고 했을 때, (N-M+1)*M이므로 O(NM)이다.
 
+---
+#algorithm/알고리즘문제해결전략  
+#algorithm/Introduction to the Design & Analysis of Algorithms, Third Edition,  Anomy Levitin
