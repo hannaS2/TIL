@@ -11,6 +11,7 @@ single-subproblem인 경우 (Divide and Conquer의 종류 중 하나)
 - Decrease by a constant factor (일정한 상수만큼 나눔)
 - Variable size (일정하지 않은 크기로 분할)
 
+예제)
 ### Sorting
 
 #### Insertion Sort
@@ -32,24 +33,55 @@ private static void insertionSort(int[] arr) {
 > worst-case는 역순으로 정렬되어 있을 때 각 원소가 부분배열의 원소 전부와 swap하므로 O(N<sup>2</sup>)
 
 #### Topological Sort
-DAG(Directed Acyclic Graph; cycle이 없는 유향그래프)에서 각 정점들의 선행 순서를 위배하지 않으면서 모든 정점을 나열하는 방법  
+DAG(Directed Acyclic Graph; cycle이 없는 유향그래프)에서 각 정점들의 선행 순서를 위배하지 않으면서 모든 정점을 나열하는 방법    
+그래프에 cycle이 있다면 위상 정렬이 불가능하다.
 1) source removal  
-정점으로 들어오는 edge가 없는 경우 제거하여 제거한 정점 순서
+더이상 정점으로 들어오는 edge가 없는 경우(이런 정점이 여러개라면 아무거나 먼저 선택해도 무관) 제거하여 제거한 정점 순서대로 정렬
 2) DFS traversal  
 DFS를 실행한 결과의 역순이 정렬순서 (DFS stack에서 pop순서 거꾸로)
 > *Decrease by a constant*  
 
 ### 순열 생성
+이전 단계에서 생성한 순열에 현재 원소가 들어갈 수 있는 위치에 추가하여 순열 생성
 ex) TSP
-> *Decrease by a constant*  
+> *Decrease by a constant(1)*  
 
 ### 부분집합 생성
-> *Decrease by a constant*  
+1. 이전 단계의 부분집합에 현재 원소 포함/미포함
+2. bit string 이용
+3. binary reflected Gray code (BRGC)  
 
-### bianry search
-> *Decrease by a constant factor*  
+ex) Knapsack Problem
+> *Decrease by a constant(1)*  
+
+### binary search
+정렬된 배열에서 반으로 배열을 나누는 재귀 호출을 통해 타겟원소를 찾는다.
+```java
+private static int recursiveBinsearch(int arr[], int left, int right, int target) {
+    int mid = (left + right) / 2;
+
+    if (left <= right) {
+        if (arr[mid] == target) return mid;
+        else if (arr[mid] > target) return recursiveBinsearch(arr, left, mid - 1, target);
+        else return recursiveBinsearch(arr, mid + 1, right, target);
+    }
+    return -1;
+}
+```
+> *Decrease by a constant factor(2)*  
+> T(n) = T(n/2) + 1  
+> 위 점화식을 풀면 binary search의 수행 시간은 O(logN)
 
 
+### Quick Select
+quick sort와 selection 알고리즘의 합쳐진 개념으로 N개의 원소를 가진 배열에서 k번째 원소를 찾는 방법이다.  
+pivot을 기준으로 기준보다 작은 원소들은 왼쪽, 큰 원소들은 오른쪽으로 보낸다. => partition  
+이 과정을 마친 후, s를 pivot의 인덱스라고 하면
+1. s = k-1 : pivot이 k번째 원소
+2. s > k-1 : s의 왼쪽 배열에 k번째 원소(왼쪽 배열을 다시 partition)
+3. s < k-1 : s의 오른쪽 배열에 k번째 원소(오른쪽 배열을 다시 partition)  
+
+을 적용해 partition한 배열을 재귀호출하여 k번째 원소를 찾는다.
 
 ```java
 <quick select>
@@ -81,16 +113,20 @@ private static int lomutoPartition(int[] arr, int left, int right) {
 }
 ```
 > *Variable size Decrease*  
-> quick sort와 selection 알고리즘의 합쳐진 개념  
-> 
+> best-case는 partition과정이 1번만 일어난 경우 O(N)
+> worst-case는 pivot이 치우쳐 있어 n-1번 재귀호출이 일어나는 경우 O(N<sup>2</sup>)
 
 
 ## Divide and Conquer
 2개 이상의 subproblem이 필요한 경우
 
-```java
-<merge sort>
+### Master Theorem
+
+
+예제)
+### Merge Sort
 배열을 절반으로 나눠 재귀 호출을 이용해 정렬하면서 합친다.
+```java
 private static void mergeSort(int[] arr) {
     if (arr.length > 1) {
         int mid = arr.length / 2;
@@ -132,10 +168,9 @@ private static void merge(int[] leftArr, int[] rightArr, int[] arr) {
  => 매번 2개씩 나누므로 log<sub>2</sub>N번 과정을 거쳐 나누게 된다.  
 > 따라서, 시간 복잡도는 O(NlogN)
 
-
-```java
-<quick sort>
+### Quick Sort
 pivot을 기준으로 왼쪽에는 기준보다 작은 숫자를, 오른쪽에는 기준보다 큰 숫자를 보내 배열을 나눠 재귀호출을 통해 정렬한다.
+```java
 private static void quickSort(int[] arr, int left, int right) {
     if (left < right) {
         int s = hoarePartition(arr, left, right);
