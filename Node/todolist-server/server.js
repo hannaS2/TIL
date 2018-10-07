@@ -53,7 +53,8 @@ app.use(logHandler({ // logger넘겨줌
     logger  
 }));
 
-app.use(bodyParser());  
+// Joi 쓰려면 사용하면 안된다!!! -> 행(hang) 현상
+// app.use(bodyParser());  
 
 // app에 router 등록3
 // app.use(router.routes())

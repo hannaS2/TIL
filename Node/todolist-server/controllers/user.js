@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 const User = require("../models/User");
 const _ = require("lodash");
+const Joi = require("koa-joi-router").Joi;
 
+/* koa-router
 const postUser = (ctx) => {
     //console.log(ctx.request.body);
 
@@ -28,7 +30,21 @@ const postUser = (ctx) => {
 
     ctx.body = "ok";
 };
+*/
 
-module.exports.postUser = postUser;
+module.exports.postUser = {
+    path: "/users",
+    method: "POST",
+    validate: {
+        body: {
+            email: Joi.string().email().required(),
+            name: Joi.string().required()
+        },
+        type: "json"
+    },
+    async handler(ctx) {
+        ctx.body = "ok";
+    }
+};
 
 
