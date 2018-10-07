@@ -53,6 +53,21 @@ app.use(logHandler({ // logger넘겨줌
     logger  
 }));
 
+// Joi error handler1
+// error메세지를 원하는 것만 보기 좋게 출력하도록
+app.use(async (ctx, next) => {
+    try {
+        await next();
+    } catch (err) {
+        ctx.body = {
+            message: err.message,
+            body: ctx.request.body,
+            query: ctx.request.query
+        }
+        ctx.app.emit("error", err, ctx);
+    }
+});
+
 // Joi 쓰려면 사용하면 안된다!!! -> 행(hang) 현상
 // app.use(bodyParser());  
 
@@ -61,6 +76,16 @@ app.use(logHandler({ // logger넘겨줌
 // .use(router.allowedMethods());
 // router를 ./routes에서 만들어서 써줬으므로 위 코드 대신 아래코드로 대체 *2
 app.use(router.middleware());
+
+// Joi error handler2
+app.on("error", (err, ctx) => {
+    if (ctx == null) {
+      logger.error({
+        err,
+        event: "error",
+      });
+    }
+  });
 
 
 // mongoose

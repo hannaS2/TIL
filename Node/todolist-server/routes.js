@@ -25,6 +25,18 @@ apiRouter.route({
 });
 */
 
-apiRouter.post("/users", userController.postUser);
+// 아래처럼 사용하면 postUser밖에 사용못함
+// apiRouter.post("/users", userController.postUser);
+
+// 아래처럼 사용하면 userController에서 추가/제거되는 것 수정해줘야 하므로 효율x
+// apiRouter.route([
+//     userController.postUser,
+//     userController.putUser
+// ]);
+
+// 따라서, 배열받아서 사용
+apiRouter.route([
+    ...userController
+]);
 
 module.exports = apiRouter;

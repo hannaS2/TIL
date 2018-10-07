@@ -30,8 +30,12 @@ const postUser = (ctx) => {
 
     ctx.body = "ok";
 };
+
+module.exports.postUser = postUser;
 */
 
+// Validator = Joi validator
+/*
 module.exports.postUser = {
     path: "/users",
     method: "POST",
@@ -46,5 +50,33 @@ module.exports.postUser = {
         ctx.body = "ok";
     }
 };
+*/
 
+const postUser = {
+    path: "/users",
+    method: "POST",
+    validate: {
+        body: {
+            email: Joi.string().email().required(),
+            name: Joi.string().required()
+        },
+        type: "json"
+    },
+    async handler(ctx) {
+        ctx.body = "post ok";
+    }
+}
 
+const putUser = {
+    path: "/users",
+    method: "PUT",
+    async handler(ctx) {
+        ctx.body = "put ok";
+    }
+}
+
+// 배열로 사용해서 제거하든 추가하든 ./routes 파일 수정할 필요없음
+module.exports = [
+    postUser,
+    putUser
+];
