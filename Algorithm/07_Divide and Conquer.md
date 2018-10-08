@@ -120,8 +120,18 @@ private static int lomutoPartition(int[] arr, int left, int right) {
 ## Divide and Conquer
 2개 이상의 subproblem이 필요한 경우
 
-### Master Theorem
-
+### Master Theorem (마스터 정리)
+재귀적인 알고리즘의 시간 복잡도를 간단하게 계산할 수 있는 방법  
+다음과 같은 점화식이 주어졌을 때, 
+```
+T(n) = a * T(n/b) + f(n)
+```
+f(n) ∈ Θ(n<sup>d</sup>)이라고 하면, 시간 복잡도 T(n)은 아래와 같다.
+  
+  - a < b<sup>d</sup> : Θ(n<sup>d</sup>)
+  - a = b<sup>d</sup> : Θ(n<sup>d</sup>logn)
+  - a > b<sup>d</sup> : Θ(n<sup>log<sub>b</sub>a</sup>)  
+  
 
 예제)
 ### Merge Sort
@@ -207,6 +217,42 @@ private static int hoarePartition(int[] arr, int left, int right) {
 따라서, pivot에 의해 어떻게 분할되는지에 따라 수행 시간이 좌우된다.  
 > worst-case는 비슷한 크기로 분할되지 않고 pivot이 치우쳐 있는 경우(배열의 최대/최소 원소인 경우): O(N<sup>2</sup>)  
 > best/average-case는 pivot이 중간쯤에 있는 경우: O(NlogN)
+
+### binary tree traversal
+binary tree의 모든 노드를 재귀적으로 지정된 규칙대로 한 번씩 방문하는 방법  
+- Pre-order : 루트 -> 왼쪽 서브트리 -> 오른쪽 서브트리
+- In-order : 왼쪽 서브트리 -> 루트 -> 오른쪽 서브트리
+- Post-order : 왼쪽 서브트리 -> 오른쪽 서브트리 -> 루트
+
+### Multiplication of Large Integers
+brute force로 하면 O(n<sup>2</sup>)  
+n이 정수의 자릿수라고 하면, 정수 A = A<sub>1</sub>A<sub>2</sub>, B = B<sub>1</sub>B<sub>2</sub> (n/2자릿수)로 재귀적으로 나눠 두 정수의 곱을 계산할 수 있다.
+
+A * B = A<sub>1</sub>B<sub>1</sub>*10<sup>n</sup> + (A<sub>1</sub>B<sub>2</sub> + A<sub>2</sub>B<sub>1</sub>)*10<sup>n/2</sup> + A<sub>2</sub>B<sub>2</sub>
+> M(n)을 한자릿수 곱셈의 횟수라고 하면, 4번 같아 보이겠지만 (A<sub>1</sub>B<sub>2</sub> + A<sub>2</sub>B<sub>1</sub>)는 (A<sub>1</sub>+A<sub>2</sub>) * (B<sub>1</sub>+B<sub>2</sub>) - (A<sub>1</sub>B<sub>1</sub> + A<sub>2</sub>B<sub>2</sub>)이므로 3번만 수행해도 된다.  
+> 따라서, M(n) = 3M(n/2) + cn , n>1 , M(1) = 1  
+> => O(n<sup>1.585</sup>)
+
+
+### Strassen's Matrix Multiplication
+brute force로 하면 O(n<sup>3</sup>)  
+nxn행렬이라고 하면, (n/2)x(n/2)행렬로 재귀적으로 나눠 행렬의 곱셈을 할 수 있다.  
+![strassen's matrix multiplication-1](https://users.cs.duke.edu/~alvy/papers/sc98/img3.gif)  
+M<sub>1</sub> = (A<sub>11</sub> + A<sub>22</sub>) * (B<sub>11</sub> + B<sub>22</sub>)  
+M<sub>2</sub> = (A<sub>21</sub> + A<sub>22</sub>) * B<sub>11</sub>  
+M<sub>3</sub> = A<sub>11</sub> * (B<sub>12</sub> - B<sub>22</sub>)  
+M<sub>4</sub> = A<sub>22</sub> * (B<sub>21</sub> - B<sub>11</sub>)  
+M<sub>5</sub> = (A<sub>11</sub> + A<sub>12</sub>) * B<sub>22</sub>  
+M<sub>6</sub> = (A<sub>21</sub> - A<sub>11</sub>) * (B<sub>11</sub> + B<sub>12</sub>)  
+M<sub>7</sub> = (A<sub>12</sub> - A<sub>22</sub>) * (B<sub>21</sub> + B<sub>22</sub>)  
+  
+C<sub>11</sub> = M<sub>1</sub> + M<sub>4</sub> - M<sub>5</sub> + M<sub>7</sub>  
+C<sub>12</sub> = M<sub>3</sub> + M<sub>5</sub>  
+C<sub>21</sub> = M<sub>2</sub> + M<sub>4</sub>  
+C<sub>22</sub> = M<sub>1</sub> + M<sub>3</sub> - M<sub>2</sub> + M<sub>6</sub>  
+> M(n)을 원소의 곱셉 횟수라고 하면,  
+> M(n) = 7M(n/2) , n>1 , M(1)=1  
+> => O(n<sup>2.807</sup>)
 
 ---
 #algorithm/알고리즘문제해결전략  
