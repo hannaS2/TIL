@@ -223,12 +223,15 @@ binary tree의 모든 노드를 재귀적으로 지정된 규칙대로 한 번�
 - Pre-order : 루트 -> 왼쪽 서브트리 -> 오른쪽 서브트리
 - In-order : 왼쪽 서브트리 -> 루트 -> 오른쪽 서브트리
 - Post-order : 왼쪽 서브트리 -> 오른쪽 서브트리 -> 루트
+> n(T)를 노드의 갯수라고 했을 때, height를 계산해보면  
+> A(n(T)) = A(n(T<sub>left</sub>)) + A(n(T<sub>right</sub>)) + 1 , n(T)>0 , A(0)=0  
+> => O(n)
 
 ### Multiplication of Large Integers
 brute force로 하면 O(n<sup>2</sup>)  
 n이 정수의 자릿수라고 하면, 정수 A = A<sub>1</sub>A<sub>2</sub>, B = B<sub>1</sub>B<sub>2</sub> (n/2자릿수)로 재귀적으로 나눠 두 정수의 곱을 계산할 수 있다.
 
-A * B = A<sub>1</sub>B<sub>1</sub>*10<sup>n</sup> + (A<sub>1</sub>B<sub>2</sub> + A<sub>2</sub>B<sub>1</sub>)*10<sup>n/2</sup> + A<sub>2</sub>B<sub>2</sub>
+A * B = A<sub>1</sub>B<sub>1</sub> * 10<sup>n</sup> + (A<sub>1</sub>B<sub>2</sub> + A<sub>2</sub>B<sub>1</sub>) * 10<sup>n/2</sup> + A<sub>2</sub>B<sub>2</sub>
 > M(n)을 한자릿수 곱셈의 횟수라고 하면, 4번 같아 보이겠지만 (A<sub>1</sub>B<sub>2</sub> + A<sub>2</sub>B<sub>1</sub>)는 (A<sub>1</sub>+A<sub>2</sub>) * (B<sub>1</sub>+B<sub>2</sub>) - (A<sub>1</sub>B<sub>1</sub> + A<sub>2</sub>B<sub>2</sub>)이므로 3번만 수행해도 된다.  
 > 따라서, M(n) = 3M(n/2) + cn , n>1 , M(1) = 1  
 > => O(n<sup>1.585</sup>)
