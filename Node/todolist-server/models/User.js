@@ -9,6 +9,8 @@ const User = new Schema({
         type: String,
         unique: true
     },
+}, {
+    versionKey: false  // __v: 0 제거
 });
 
 module.exports = mongoose.model("User", User);
