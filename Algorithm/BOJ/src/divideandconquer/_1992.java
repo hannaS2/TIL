@@ -23,7 +23,7 @@ public class _1992 {  // 1780과 똑같은 유형
             }
         }
 
-        /* Scanner 사용이 BufferedReader보다 조금 더 시간이 오래 걸림
+        /* Scanner 사용이 BufferedReader 보다 조금 더 시간이 오래 걸림
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
         sc.nextLine();

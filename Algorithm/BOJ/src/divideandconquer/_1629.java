@@ -14,19 +14,19 @@ public class _1629 {
         long result = power(n, k, divisor);
         System.out.println(result);
 
-        /* 풀이2 (재귀x)
+        /* 풀이2(재귀x)
         long result = 1;
-		long multiply = n%divisor;
+        long multiply = n % divisor;
 
-		while(k>0){
-			if(k%2==1){
-				result *= multiply;
-				result%=divisor;
-			}
-			multiply = ((multiply%divisor)*(multiply%divisor))%divisor;
-			B/=2;
-		}
-		System.out.print(result);
+        while (k > 0) {
+            if (k % 2 == 1) {
+                result *= multiply;
+                result %= divisor;
+            }
+            multiply = ((multiply % divisor) * (multiply % divisor)) % divisor;
+            B /= 2;
+        }
+        System.out.print(result);
         */
 
     }

@@ -2,7 +2,7 @@ package divideandconquer;
 
 import java.util.Scanner;
 
-public class _1780 {
+public class _1780 {  // 1992와 똑같은 유형
     private static int[] result = new int[3]; // -1, 0, 1
     private static int[][] paper;
 
