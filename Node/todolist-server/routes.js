@@ -5,9 +5,10 @@ const apiRouter = router();
 const Joi = router.Joi;
 
 const userController = require("./controllers/user");
+const taskController = require("./controllers/task")
 
 apiRouter.get("/", function (ctx) {
-    ctx.body = "Hello, TODO Service"
+    ctx.body = "Hello, TODO Service";
 });
 
 /* controller에서 하는 것이 좋음
@@ -36,7 +37,8 @@ apiRouter.route({
 
 // 따라서, 배열받아서 사용
 apiRouter.route([
-    ...userController
+    ...userController,
+    ...taskController
 ]);
 
 module.exports = apiRouter;

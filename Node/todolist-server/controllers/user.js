@@ -63,9 +63,9 @@ const postUser = {
         type: "json"
     },
     async handler(ctx) {
-        // const user = new User(ctx.request.body);
-        const user = new User({name:ctx.request.body.name, email:ctx.request.body.email});
-        user.save(function(err) {
+        const user = new User(ctx.request.body);
+        // const user = new User({name:ctx.request.body.name, email:ctx.request.body.email});
+        await user.save(async function(err) {
             if (err) console.error(err);
             else console.log("Saved!");
         });
@@ -84,14 +84,14 @@ const putUser = {
         type: "json"
     },
     async handler(ctx) {
-        await User.findById(ctx.request.params.id, async function(err, user) {
+        await User.findById({_id: ctx.request.params.id}, async function(err, user) {
             console.log('--- Update(PUT) ---');
             if (err) {
                 console.error(err);
                 return;
             } else {
-                user.name = ctx.request.body.name;
-                user.email = ctx.request.body.email;
+                if(ctx.request.body.name) user.name = ctx.request.body.name;
+                if(ctx.request.body.email) user.email = ctx.request.body.email;
 
                 await user.save(async function(err) {
                     if (err) console.error(err);
@@ -120,9 +120,9 @@ const deleteUser = {
     path: "/users/:id",
     method: "DELETE",
     async handler(ctx) {
-        User.remove({_id: ctx.request.params.id}, function(err) {
+        await User.remove({_id: ctx.request.params.id}, async function (err) {
             console.log("--- Delete ---");
-            if(err) console.error(err);
+            if (err) console.error(err);
             console.log("--- Deleted ---");
         });
         ctx.body = "delete ok";
