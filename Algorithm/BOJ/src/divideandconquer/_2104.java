@@ -3,6 +3,7 @@ package divideandconquer;
 import java.util.Scanner;
 
 public class _2104 {
+    // brute force 로 하면 시간초과
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
@@ -13,6 +14,8 @@ public class _2104 {
         for (int i = 0; i < n; i++) {
             set[i] = sc.nextInt();
         }
+
+
     }
 
 
