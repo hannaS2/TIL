@@ -15,9 +15,11 @@
   "author": "Hanna Jang <j3552j@gmail.com>",
   "license": "UNLICENSED",
   "dependencies": {
+    "bcrypt": "^3.0.2",
     "bunyan": "^1.8.12",
     "dotenv": "^6.0.0",
     "humanize-number": "0.0.2",
+    "jsonwebtoken": "^8.3.0",
     "koa": "^2.5.3",
     "koa-bodyparser": "^4.2.1",
     "koa-joi-router": "^5.1.0",
