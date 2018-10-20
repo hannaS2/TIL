@@ -13,7 +13,8 @@ const configs = {
         env,
         name: process.env.APP_NAME || "sample-api",
         host: process.env.APP_HOST || "0.0.0.0",
-        port: process.env.APP_PORT || 3000
+        port: process.env.APP_PORT || 3000,
+        jwtSecret: process.env.JWT_SECRET
     },
     production: {
         database: {
