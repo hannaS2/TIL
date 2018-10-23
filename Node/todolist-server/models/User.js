@@ -11,7 +11,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const { 
-    ClientError 
+    ClientError,
+    NotFoundError
 }  = require("../error");
 
 const User = new Schema({
@@ -77,7 +78,7 @@ User.methods.generateToken = async function() {
           user: this._id,
         }
     }, jwtSecret, {
-        expiresIn: '3h' 
+        expiresIn: '3h'
     });
 }
 
@@ -101,6 +102,17 @@ User.statics.signIn = async function (data) {
     return user.generateToken();
 }
 
+User.statics.updateUser = async function (token, data) {
+    const bearerToken = token.authorization.split(" ")[1];
+    const decoded = jwt.verify(bearerToken, jwtSecret);
+
+    const user = {
+        ...data
+    };
+
+    await this.findByIdAndUpdate(decoded.data.user, user);
+    return user;
+}
   
 
 module.exports = mongoose.model("User", User);

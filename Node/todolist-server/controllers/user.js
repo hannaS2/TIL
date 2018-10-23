@@ -155,9 +155,12 @@ const postUser = {
 }
 
 const putUser = {
-    path: "/users/:id",
+    path: "/users/updateUser",
     method: "PUT",
     validate: {
+        headers: {
+            authorization: Joi.string().required()
+        },
         body: {
             email: Joi.string().email(),
             name: Joi.string(),
@@ -167,7 +170,7 @@ const putUser = {
     },
     async handler(ctx) {
         // user.id
-
+        ctx.body = await User.updateUser(ctx.request.headers, ctx.request.body);
     }
 }
 
