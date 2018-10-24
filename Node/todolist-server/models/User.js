@@ -5,15 +5,15 @@ const jwt = require("jsonwebtoken");
 
 const {
     jwtSecret
- } = require("../config");
+} = require("../config");
 
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const { 
+const {
     ClientError,
     NotFoundError
-}  = require("../error");
+} = require("../error");
 
 const User = new Schema({
     name: {
@@ -27,8 +27,8 @@ const User = new Schema({
         type: String,
     }
 }, {
-    versionKey: false  // __v: 0 제거
-});
+        versionKey: false  // __v: 0 제거
+    });
 
 // Mongoose 에서는 model에 새로운 기능을 추가할 수 있습니다.
 // signUp
@@ -45,25 +45,25 @@ User.statics.findOneByEmail = async function (email) {
 
 User.statics.signUp = async function (data) {
     const {
-      email,
-      password,
+        email,
+        password,
     } = data;
-  
+
     const exist = await this.findOneByEmail(email);
     if (!_.isNil(exist)) {
-      throw new ClientError("Already exist email");
+        throw new ClientError("Already exist email");
     }
-  
+
     const passwordHash = await bcrypt.hash(password, saltRounds)
     const user = new this({
-      ...data,
-      password: passwordHash,
+        ...data,
+        password: passwordHash,
     });
-  
+
     await user.save();
     const ret = user.toObject();
     delete ret.password;
-  
+
     return ret;
 }
 
@@ -72,14 +72,14 @@ User.methods.verifyPassword = async function (password) {
     return bcrypt.compare(password, this.password);
 }
 
-User.methods.generateToken = async function() {
+User.methods.generateToken = function () {
     return token = jwt.sign({
         data: {
-          user: this._id,
+            user: this._id,
         }
     }, jwtSecret, {
-        expiresIn: '3h'
-    });
+            expiresIn: '3h'
+        });
 }
 
 // User 모델에 대한 함수
@@ -102,17 +102,32 @@ User.statics.signIn = async function (data) {
     return user.generateToken();
 }
 
-User.statics.updateUser = async function (token, data) {
+User.methods.verifyToken = function (token) {
     const bearerToken = token.authorization.split(" ")[1];
-    const decoded = jwt.verify(bearerToken, jwtSecret);
-
-    const user = {
-        ...data
-    };
-
-    await this.findByIdAndUpdate(decoded.data.user, user);
-    return user;
+    return decodedToken = jwt.verify(bearerToken, jwtSecret);
 }
-  
+
+User.statics.updateUser = async function (token, data) {
+    const user = new this({
+        ...data
+    });
+    const ret = user.toObject();
+    delete ret._id;
+
+    const verified = user.verifyToken(token);
+    await this.findByIdAndUpdate(verified.data.user, ret);
+    return ret;
+}
+
+User.statics.getOwnUser = async function (token) {
+    const user = new this();
+    const verified = user.verifyToken(token);
+
+    const ret = await this.findById(verified.data.user).lean();
+    delete ret.password;
+    return ret;
+    // return await this.findById(verified.data.user);
+}
+
 
 module.exports = mongoose.model("User", User);
