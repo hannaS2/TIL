@@ -178,11 +178,7 @@ const getUser = {
     path: "/users",
     method: "GET",
     async handler(ctx) {
-        await User.find(async function(err, users) {
-            console.log('--- Read all ---');
-            if (err) console.error(err);
-            else ctx.body = users;
-        });
+        ctx.body = await User.getOwnUser(ctx.request.headers);
     }
 }
 
