@@ -13,6 +13,7 @@
 ### binomial coefficient (이항 계수)
 메모이제이션을 사용하여 한 번 계산한 값을 배열에 저장하고, 함수 호출 시 배열에 값이 저장되어 있는지 확인한 후 저장되어 있다면 재사용하고, 저장되어 있지 않다면 계산한 후 배열에 저장한다.
 ```java
+<top-down>
 private static int[][] cache = new int[30][30];
 
 private static int bino(int n, int r) {
@@ -28,3 +29,24 @@ private static int bino(int n, int r) {
 > r의 최대치는 n이므로 존재할 수 있는 부분 문제의 수는 최대 O(N<sup>2</sup>)  
 > 각 부분 문제를 게산할 때 걸리는 시간은 반복문이 없으므로 O(1)  
 > 따라서, O(N<sup>2</sup>) * O(1) = **O(N<sup>2</sup>)**
+
+```java
+<bottom-up>
+private static int[][] cache = new int[30][30];
+
+private static int bino2(int n, int r) {
+    // cache[0][0]부터 시작하여 위에서 아래로 재귀 관계식을 적용하여 배열을 채워나간다.
+    for (int i = 0; i <= n; i++) {
+        for (int j = 0; j <= Math.min(i, r); j++) {
+            if (j == 0 || j == i) cache[i][j] = 1;
+            else cache[i][j] = cache[i - 1][j - 1] + cache[i - 1][j];
+        }
+    }
+    return cache[n][r];
+}
+```
+
+### 
+
+---
+#algorithm/알고리즘문제해결전략  
