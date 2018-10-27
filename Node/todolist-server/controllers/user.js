@@ -9,11 +9,12 @@ const {
 
 const Joi = require("koa-joi-router").Joi;
 
-
 const {
     ClientError,
     NotFoundError
 } = require("../error");
+
+// Image 
 
 /* koa-router
 const postUser = (ctx) => {

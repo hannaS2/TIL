@@ -5,7 +5,8 @@ const apiRouter = router();
 const Joi = router.Joi;
 
 const userController = require("./controllers/user");
-const taskController = require("./controllers/task")
+const taskController = require("./controllers/task");
+const imageController = require("./controllers/image");
 
 apiRouter.get("/", function (ctx) {
     ctx.body = "Hello, TODO Service";
@@ -38,7 +39,8 @@ apiRouter.route({
 // 따라서, 배열받아서 사용
 apiRouter.route([
     ...userController,
-    ...taskController
+    ...taskController,
+    ...imageController
 ]);
 
 module.exports = apiRouter;
