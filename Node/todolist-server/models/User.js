@@ -1,8 +1,6 @@
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
-const saltRounds = 10;
 const jwt = require("jsonwebtoken");
-
 const {
     jwtSecret
 } = require("../config");
@@ -43,6 +41,11 @@ User.statics.findOneByEmail = async function (email) {
     }).exec();
 }
 
+User.statics.hashPassword = function (password) {
+    const saltRounds = 10;
+    return bcrypt.hash(password, saltRounds);
+}
+
 User.statics.signUp = async function (data) {
     const {
         email,
@@ -54,7 +57,7 @@ User.statics.signUp = async function (data) {
         throw new ClientError("Already exist email");
     }
 
-    const passwordHash = await bcrypt.hash(password, saltRounds)
+    const passwordHash = this.hashPassword(password);
     const user = new this({
         ...data,
         password: passwordHash,
@@ -100,33 +103,6 @@ User.statics.signIn = async function (data) {
     }
 
     return user.generateToken();
-}
-
-User.methods.verifyToken = function (token) {
-    const bearerToken = token.authorization.split(" ")[1];
-    return decodedToken = jwt.verify(bearerToken, jwtSecret);
-}
-
-User.statics.updateUser = async function (token, data) {
-    const user = new this({
-        ...data
-    });
-    const ret = user.toObject();
-    delete ret._id;
-
-    const verified = user.verifyToken(token);
-    await this.findByIdAndUpdate(verified.data.user, ret);
-    return ret;
-}
-
-User.statics.getOwnUser = async function (token) {
-    const user = new this();
-    const verified = user.verifyToken(token);
-
-    const ret = await this.findById(verified.data.user).lean();
-    delete ret.password;
-    return ret;
-    // return await this.findById(verified.data.user);
 }
 
 

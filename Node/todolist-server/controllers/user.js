@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 const {
     jwtSecret
- } = require("../config");
+} = require("../config");
 
 const Joi = require("koa-joi-router").Joi;
 
@@ -154,23 +154,40 @@ const postUser = {
     }
 }
 
+// DRY(Don't Repeat Yourself)
 const putUser = {
-    path: "/users/updateUser",
+    path: "/users",
     method: "PUT",
     validate: {
         headers: {
             authorization: Joi.string().required()
         },
-        body: {
+        body: Joi.object({
             email: Joi.string().email(),
             name: Joi.string(),
             password: Joi.string().regex(passwordRegex, "password")
-        },
+        }).or("email", "name", "password").required(),
         type: "json"
     },
     async handler(ctx) {
-        // user.id
-        ctx.body = await User.updateUser(ctx.request.headers, ctx.request.body);
+        if (_.isNil(ctx.user)) {
+            throw new ClientError("Unauthorized");
+        }
+
+        const {
+            password = null,
+        } = ctx.request.body;
+        const data = ctx.request.body;
+
+        if (!_.isNil(password)) {
+            const passwordHash = await User.hashPassword(password);
+            data.password = passwordHash;
+        }
+        // { new: true } 안 해주면 request정보가 바로바로 안바뀜
+        const user = await User.findByIdAndUpdate(ctx.user._id, data, {
+            new: true
+        });
+        ctx.body = user;
     }
 }
 
@@ -178,7 +195,11 @@ const getUser = {
     path: "/users",
     method: "GET",
     async handler(ctx) {
-        ctx.body = await User.getOwnUser(ctx.request.headers);
+        if (_.isNil(ctx.user)) {
+            throw new ClientError("Unauthorized");
+        }
+
+        ctx.body = ctx.user;
     }
 }
 
@@ -186,7 +207,7 @@ const deleteUser = {
     path: "/users/:id",
     method: "DELETE",
     async handler(ctx) {
-        await User.remove({_id: ctx.request.params.id}, async function (err) {
+        await User.remove({ _id: ctx.request.params.id }, async function (err) {
             console.log("--- Delete ---");
             if (err) console.error(err);
             console.log("--- Deleted ---");
@@ -231,7 +252,7 @@ const deleteUser = {
 //  1. AccessToken 삭제
 // logout은 delete지만 보통 get으로
 const signIn = {
-    
+
     path: "/auth/login",
     method: "POST",
     validate: {
@@ -241,7 +262,7 @@ const signIn = {
         },
         type: "json"
     },
-    async handler (ctx) {
+    async handler(ctx) {
         /* model로
         const {
             email,

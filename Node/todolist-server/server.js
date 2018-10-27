@@ -14,6 +14,9 @@ const app = new Koa();
 //const router = new Router();
 const router = require("./routes");
 
+const logHandler = require("./middlewares/logHandler");
+const authHandler = require("./middlewares/authHandler");
+
 // Javascript
 //   Compile 언어
 //     C, C++, Java, C#
@@ -48,10 +51,12 @@ const router = require("./routes");
 
 //app.use(logger());  // 순서!! logger는 use중 위로 올려줘야함!
 // middleware가 주는 형식에 따라야한다.
-const logHandler = require("./middlewares/logHandler")
+
 app.use(logHandler({ // logger넘겨줌
     logger  
 }));
+
+app.use(authHandler());
 
 // Joi error handler1
 // error메세지를 원하는 것만 보기 좋게 출력하도록
