@@ -205,15 +205,16 @@ const getUser = {
 }
 
 const deleteUser = {
-    path: "/users/:id",
+    path: "/users",
     method: "DELETE",
     async handler(ctx) {
-        await User.remove({ _id: ctx.request.params.id }, async function (err) {
-            console.log("--- Delete ---");
-            if (err) console.error(err);
-            console.log("--- Deleted ---");
-        });
-        ctx.body = "delete ok";
+        if (_.isNil(ctx.user)) {
+            throw new ClientError("Unauthorized");
+        }
+
+        const user = await User.findByIdAndDelete(ctx.user._id);
+        
+        ctx.body = user;
     }
 }
 
@@ -253,7 +254,6 @@ const deleteUser = {
 //  1. AccessToken 삭제
 // logout은 delete지만 보통 get으로
 const signIn = {
-
     path: "/auth/login",
     method: "POST",
     validate: {

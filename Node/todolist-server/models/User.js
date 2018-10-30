@@ -57,7 +57,7 @@ User.statics.signUp = async function (data) {
         throw new ClientError("Already exist email");
     }
 
-    const passwordHash = this.hashPassword(password);
+    const passwordHash = await this.hashPassword(password);
     const user = new this({
         ...data,
         password: passwordHash,
