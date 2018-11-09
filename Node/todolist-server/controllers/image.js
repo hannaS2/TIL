@@ -38,6 +38,10 @@ const getSignedUrl = function (operation, filename) {
     });
 }
 
+// Stream
+
+
+// /*
 const postImage = {
     path: "/images",
     method: "POST",
@@ -54,12 +58,13 @@ const postImage = {
 
         // Database Save
         // _id를 기반으로 파일명을 생성해야 한다(중복 방지).
-        const signedUrl = await getSignedUrl("putObject", "file.jpg");
+        const signedUrl = await getSignedUrl("putObject", "file3.jpg");
         ctx.body = {
             signedUrl,
         }
     }
 };
+//*/
 
 const getImage = {
     path: "/images/:filename",

@@ -11,9 +11,16 @@ const Task = new Schema({
     deadline: {
         type: Date
     },
+    userId: {
+        type: String
+    }
     
 }, {
     versionKey: false
 });
+
+Task.statics.saveTask = async function (data) {
+    
+}
 
 module.exports = mongoose.model("Task", Task);
