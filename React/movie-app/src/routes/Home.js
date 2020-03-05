@@ -7,6 +7,7 @@ class Home extends React.Component {
   state = {
     isLoading: true,
     movies: []
+    // About.js에서 Home.js로 돌아올 때 state가 비어있어서 다시 로딩됨 => Redux 사용. state를 다른데에 저장해놨다가 사용해서 다시 Home으로 돌아갔을 때 로딩하지 않아도 된다.
   };
 
   getMovies = async () => {
